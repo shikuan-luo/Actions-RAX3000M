@@ -42,3 +42,18 @@ chmod +x /tmp/clash >/dev/null 2>&1
 mkdir -p feeds/luci/applications/luci-app-openclash/root/etc/openclash/core
 mv /tmp/clash feeds/luci/applications/luci-app-openclash/root/etc/openclash/core/clash >/dev/null 2>&1
 rm -rf /tmp/clash.tar.gz >/dev/null 2>&1
+
+##-----------------Add OpenClash Meta (Mihomo) core------------------
+MIHOMO_VERSION=$(curl -sL https://api.github.com/repos/MetaCubeX/mihomo/releases/latest | grep '"tag_name"' | sed -E 's/.*"([^"]+)".*/\1/')
+if [ -n "$MIHOMO_VERSION" ]; then
+  curl -sL -m 60 --retry 2 "https://github.com/MetaCubeX/mihomo/releases/download/${MIHOMO_VERSION}/mihomo-linux-arm64-${MIHOMO_VERSION}.gz" -o /tmp/mihomo.gz
+  gzip -d /tmp/mihomo.gz >/dev/null 2>&1
+  chmod +x /tmp/mihomo >/dev/null 2>&1
+  mv /tmp/mihomo feeds/luci/applications/luci-app-openclash/root/etc/openclash/core/clash_meta >/dev/null 2>&1
+  echo "Mihomo Meta core ${MIHOMO_VERSION} (linux-arm64) installed."
+else
+  echo "WARNING: Failed to get Mihomo version, Meta core not installed!"
+fi
+
+##-----------------Manually set CPU frequency for MT7981B-----------------
+sed -i '/"mediatek"\/\*|\"mvebu"\/\*/{n; s/.*/\tcpu_freq="1.3GHz" ;;/}' package/emortal/autocore/files/generic/cpuinfo
