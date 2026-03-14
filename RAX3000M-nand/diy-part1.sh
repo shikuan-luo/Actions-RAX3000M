@@ -16,7 +16,7 @@
 #sed -i '$a src-git lienol https://github.com/Lienol/openwrt-package' feeds.conf.default
 #sed -i '$a src-git Whitecolor https://github.com/Whitestorys/openwrt-extra-packages.git' feeds.conf.default
 sed -i '$a src-git kenzo https://github.com/kenzok8/openwrt-packages' feeds.conf.default
-sed -i '$a src-git small https://github.com/kenzok8/small-package' feeds.conf.default
+sed -i '$a src-git small https://github.com/kenzok8/small' feeds.conf.default
 # sed -i '$a src-git 281677160 https://github.com/281677160/openwrt-package' feeds.conf.default
 # sed -i '$a src-git haiibo https://github.com/haiibo/openwrt-packages' feeds.conf.default
 #sed -i '$a src-git ytalm https://github.com/ytalm/my-packages' feeds.conf.default
@@ -42,7 +42,7 @@ sed -i '$a src-git small https://github.com/kenzok8/small-package' feeds.conf.de
 # 添加第三方应用
 mkdir kiddin9
 pushd kiddin9
-git clone --depth=1 https://github.com/kiddin9/openwrt-packages .
+git clone --depth=1 https://github.com/kiddin9/op-packages .
 popd
 
 mkdir Modem-Support
@@ -60,9 +60,8 @@ pushd package
 
 # 系统相关应用
 #Poweroff
-git clone --depth=1 https://github.com/esirplayground/luci-app-poweroff .
-# mkdir luci-app-poweroff
-# cp -rf ../kiddin9/luci-app-poweroff/* luci-app-poweroff
+mkdir -p luci-app-poweroff
+cp -rf ../kiddin9/luci-app-poweroff/* luci-app-poweroff 2>/dev/null || git clone --depth=1 https://github.com/esirplayground/luci-app-poweroff luci-app-poweroff
 #Diskman
 rm -rf ../package/feeds/luci/luci-app-diskman
 rm -rf ../feeds/luci/applications/luci-app-diskman
