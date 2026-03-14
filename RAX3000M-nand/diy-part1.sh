@@ -74,6 +74,8 @@ cp -rf ../kiddin9/luci-app-fileassistant/* luci-app-fileassistant
 #Guest-wifi
 mkdir luci-app-guest-wifi
 cp -rf ../kiddin9/luci-app-guest-wifi/* luci-app-guest-wifi
+# 修复：主包内含 uci-defaults/luci-i18n-guest-wifi-zh-cn 与 i18n 包冲突，删除主包中的重复文件
+rm -f luci-app-guest-wifi/root/etc/uci-defaults/luci-i18n-guest-wifi-zh-cn 2>/dev/null
 #Onliner
 mkdir luci-app-onliner
 cp -rf ../kiddin9/luci-app-onliner/* luci-app-onliner
