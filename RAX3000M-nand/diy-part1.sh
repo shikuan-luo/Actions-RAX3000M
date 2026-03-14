@@ -113,6 +113,8 @@ cp -rf ../kiddin9/luci-app-samba4/* luci-app-samba4
 mkdir luci-app-openclash
 cp -rf ../kiddin9/luci-app-openclash/* luci-app-openclash
 cp -rf ../MyConfig/configs/istoreos/general/applications/luci-app-openclash/* luci-app-openclash
+# 移除 kmod-nft-tproxy 依赖（21.02 使用 iptables/firewall3，不支持 nftables）
+sed -i '/kmod-nft-tproxy/d' luci-app-openclash/Makefile
 #加入OpenClash核心
 # chmod -R a+x $GITHUB_WORKSPACE/scripts/preset-clash-core.sh
 # if [ "$1" = "rk33xx" ]; then
