@@ -57,3 +57,31 @@ fi
 
 ##-----------------Manually set CPU frequency for MT7981B-----------------
 sed -i '/"mediatek"\/\*|\"mvebu"\/\*/{n; s/.*/\tcpu_freq="1.3GHz" ;;/}' package/emortal/autocore/files/generic/cpuinfo
+
+# ============================================
+# 以下为 v2 修正版新增的修复
+# ============================================
+
+# 修复1：mtwifi-cfg 前端 wireless.js 替换
+# luci-app-mtwifi-cfg 安装后不会自动替换标准 wireless.js
+# 导致 WiFi 加密前端只显示"无加密"
+mkdir -p files/etc/uci-defaults
+cat > files/etc/uci-defaults/99-fix-mtwifi-cfg << 'FIXEOF'
+#!/bin/sh
+if [ -f /rom/usr/share/luci-app-mtwifi-cfg/wireless-mtk.js ]; then
+    cp /rom/usr/share/luci-app-mtwifi-cfg/wireless-mtk.js /www/luci-static/resources/view/network/wireless.js
+fi
+exit 0
+FIXEOF
+chmod +x files/etc/uci-defaults/99-fix-mtwifi-cfg
+
+# 修复3：OpenClash 默认启用 Meta 内核 + 自启动
+cat > files/etc/uci-defaults/98-openclash-defaults << 'OCEOF'
+#!/bin/sh
+uci set openclash.config.enable='1'
+uci set openclash.config.en_mode='clash_meta'
+uci commit openclash
+/etc/init.d/openclash enable
+exit 0
+OCEOF
+chmod +x files/etc/uci-defaults/98-openclash-defaults
